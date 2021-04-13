@@ -27,7 +27,8 @@ var boxArr = [],
     ladder4 = new Image(),
     jogador1 = new Jogador(corJogador1, 'Luiz'), // Instância do jogador 1
     jogador2 = new Jogador(corJogador2, 'José'), // Instância do jogador 2
-    jogador1Turno = Math.random()<0.5?false:true;
+    jogador1Turno = Math.random()<0.5?false:true,
+    jogarNovamente = false;
 
 snake1.src = './img/snake1.png';
 snake2.src = './img/snake2.png';
@@ -102,14 +103,26 @@ function Jogar() {
         jogador1.jogarDado();
         jogador1.avatar();
         jogador2.avatar();
-        jogador1Turno = false;
+        jogador1Turno = jogarNovamente;
+        if (jogador1Turno) {
+            Borda();
+            LoadCobraseEscadas();
+            jogador1.jogarDado();
+            jogador1.avatar();
+            jogador2.avatar();
+        }
+        jogarNovamente = false;
     } else {
         Borda();
         LoadCobraseEscadas();
-        jogador2.jogarDado();
-        jogador2.avatar();
-        jogador1.avatar();
-        jogador1Turno = true;
+        if (jogador1.posicao == 100) {
+            alert("O jogo acabou "+jogador2.nome);
+        } else {
+            jogador2.jogarDado();
+            jogador2.avatar();
+            jogador1.avatar();
+            jogador1Turno = true;
+        }
     }
 }
 
@@ -123,25 +136,40 @@ function Jogador(color, nome) {
 
     this.jogarDado = function() {
         statusDetalhados();
-        let r = Math.floor((Math.random() * 6) + 1); // Valor do dado (1 - 6)
+        let dado1 = Math.floor((Math.random() * 6) + 1); // Valor do dado (1 - 6)
+        let dado2 = Math.floor((Math.random() * 6) + 1); // Valor do dado (1 - 6)
 
-        if (r == 1) {
+        var soma = dado1 + dado2;
+
+        _canvasPlayerObj.FillText("Dado1 "+dado1+" + Dado2 "+dado2+" = "+soma, 20, 200, '#1f1f2e', '20px Arial');
+
+        if (dado1 == dado2) {
+            jogarNovamente = true;
+            alert("Jogador "+this.nome+" vai jogar novamente. \nDado 1 = "+dado1+"\nDado 2 = "+dado2);
+        }
+
+        if (soma >= 2) {
             this.ativo = true;
         }
 
-        if (r <= (boxArr.length - 1)-this.posicao && this.ativo){
-            this.posicao+=r;
+        if (soma <= (boxArr.length - 1)-this.posicao && this.ativo){
+            this.posicao+=soma;
         }
+
+        var position = this.posicao + 1;
+        _canvasPlayerObj.FillText("O jogador "+this.nome+" está na posição "+position, 20, 240, '#1f1f2e', '17px Arial');
 
         // Verificando se ele é o vencedor
         if (this.posicao == boxArr.length-1){
-            alert("O jogador "+this.nome+" venceu!! \n Por favor, precione ENTER para recomeçar.");
+            alert("O jogador "+this.nome+" venceu!! \n Por favor, precione ENTER.");
         }
     }
+
     // Representação do avatar (Se for na posição onde é a cabeça da cobra, ele regressa, se for na posição do início da escada, ele avança.)
     this.avatar = function () {
         let posicaoAtual = boxArr[this.posicao];
         if (this.posicao == 58) {
+            alert("O jogador "+this.nome+" caiu em uma casa onde é cobra!");
             _canvasObj.FillCircle(posicaoAtual.x+posicaoAtual.tamanho/2, posicaoAtual.y+posicaoAtual.tamanho/2, boxSize/3, 0, 2*Math.PI, false, this.color);
             this.posicao = 1;
             setTimeout(() => {
@@ -149,6 +177,7 @@ function Jogador(color, nome) {
                 _canvasObj.FillCircle(posicaoAtual.x+posicaoAtual.tamanho/2, posicaoAtual.y+posicaoAtual.tamanho/2, boxSize/3, 0, 2*Math.PI, false, this.color);
             }, 200)
         } else if (this.posicao == 98) {
+            alert("O jogador "+this.nome+" caiu em uma casa onde é cobra!");
             _canvasObj.FillCircle(posicaoAtual.x+posicaoAtual.tamanho/2, posicaoAtual.y+posicaoAtual.tamanho/2, boxSize/3, 0, 2*Math.PI, false, this.color);
             this.posicao = 25;
             setTimeout(() => {
@@ -156,6 +185,7 @@ function Jogador(color, nome) {
                 _canvasObj.FillCircle(posicaoAtual.x+posicaoAtual.tamanho/2, posicaoAtual.y+posicaoAtual.tamanho/2, boxSize/3, 0, 2*Math.PI, false, this.color);
             }, 200)
         } else if (this.posicao == 85) {
+            alert("O jogador "+this.nome+" caiu em uma casa onde é cobra!");
             _canvasObj.FillCircle(posicaoAtual.x+posicaoAtual.tamanho/2, posicaoAtual.y+posicaoAtual.tamanho/2, boxSize/3, 0, 2*Math.PI, false, this.color);
             this.posicao = 32;
             setTimeout(() => {
@@ -163,6 +193,7 @@ function Jogador(color, nome) {
                 _canvasObj.FillCircle(posicaoAtual.x+posicaoAtual.tamanho/2, posicaoAtual.y+posicaoAtual.tamanho/2, boxSize/3, 0, 2*Math.PI, false, this.color);
             }, 200)
         } else if (this.posicao == 31) {
+            alert("O jogador "+this.nome+" caiu em uma casa onde é cobra!");
             _canvasObj.FillCircle(posicaoAtual.x+posicaoAtual.tamanho/2, posicaoAtual.y+posicaoAtual.tamanho/2, boxSize/3, 0, 2*Math.PI, false, this.color);
             this.posicao = 8;
             setTimeout(() => {
@@ -170,6 +201,7 @@ function Jogador(color, nome) {
                 _canvasObj.FillCircle(posicaoAtual.x+posicaoAtual.tamanho/2, posicaoAtual.y+posicaoAtual.tamanho/2, boxSize/3, 0, 2*Math.PI, false, this.color);
             }, 200)
         } else if (this.posicao == 20) {
+            alert("O jogador "+this.nome+" caiu em uma casa onde é escada!");
             _canvasObj.FillCircle(posicaoAtual.x+posicaoAtual.tamanho/2, posicaoAtual.y+posicaoAtual.tamanho/2, boxSize/3, 0, 2*Math.PI, false, this.color);
             this.posicao = 40;
             setTimeout(() => {
@@ -177,6 +209,7 @@ function Jogador(color, nome) {
                 _canvasObj.FillCircle(posicaoAtual.x+posicaoAtual.tamanho/2, posicaoAtual.y+posicaoAtual.tamanho/2, boxSize/3, 0, 2*Math.PI, false, this.color);
             }, 200)
         } else if (this.posicao == 16) {
+            alert("O jogador "+this.nome+" caiu em uma casa onde é escada!");
             _canvasObj.FillCircle(posicaoAtual.x+posicaoAtual.tamanho/2, posicaoAtual.y+posicaoAtual.tamanho/2, boxSize/3, 0, 2*Math.PI, false, this.color);
             this.posicao = 55;
             setTimeout(() => {
@@ -184,6 +217,7 @@ function Jogador(color, nome) {
                 _canvasObj.FillCircle(posicaoAtual.x+posicaoAtual.tamanho/2, posicaoAtual.y+posicaoAtual.tamanho/2, boxSize/3, 0, 2*Math.PI, false, this.color);
             }, 200)
         } else if (this.posicao == 6) {
+            alert("O jogador "+this.nome+" caiu em uma casa onde é escada!");
             _canvasObj.FillCircle(posicaoAtual.x+posicaoAtual.tamanho/2, posicaoAtual.y+posicaoAtual.tamanho/2, boxSize/3, 0, 2*Math.PI, false, this.color);
             this.posicao = 34;
             setTimeout(() => {
@@ -191,6 +225,7 @@ function Jogador(color, nome) {
                 _canvasObj.FillCircle(posicaoAtual.x+posicaoAtual.tamanho/2, posicaoAtual.y+posicaoAtual.tamanho/2, boxSize/3, 0, 2*Math.PI, false, this.color);
             }, 200)
         } else if (this.posicao == 30) {
+            alert("O jogador "+this.nome+" caiu em uma casa onde é escada!");
             _canvasObj.FillCircle(posicaoAtual.x+posicaoAtual.tamanho/2, posicaoAtual.y+posicaoAtual.tamanho/2, boxSize/3, 0, 2*Math.PI, false, this.color);
             this.posicao = 92;
             setTimeout(() => {
