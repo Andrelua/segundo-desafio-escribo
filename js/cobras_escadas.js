@@ -111,11 +111,15 @@ function Jogar() {
     if (jogador1Turno) {
         Borda();
         LoadCobraseEscadas();
-        jogador1.jogarDado();
-        jogador1.avatar();
-        jogador2.avatar();
-        jogador1Turno = jogarNovamente;
-        jogarNovamente = false;
+        if (statusGame == false) {
+            alert("O jogo acabou "+jogador2.nome+"!");
+        } else {
+            jogador1.jogarDado();
+            jogador1.avatar();
+            jogador2.avatar();
+            jogador1Turno = jogarNovamente;
+            jogarNovamente = false;
+        }
     } else {
         Borda();
         LoadCobraseEscadas();
