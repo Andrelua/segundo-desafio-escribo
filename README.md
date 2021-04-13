@@ -8,7 +8,7 @@ Como eu utilizei o VsCode baixei uma extenção chamada **Open in default browse
 Com ele posso criar um servidor local, para poder abrir páginas html.
 
 ### Segunda etapa.
-Para abrir o servidor local basta clicar com o lado direito do mouse na página **cobras_escadas.html**.
+Para abrir o servidor local basta clicar com o botão direito do mouse na página **cobras_escadas.html**.
 E clicar nesta opção:
 
 ![](/img_game/server.png)
