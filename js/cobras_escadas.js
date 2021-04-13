@@ -13,6 +13,9 @@ const canvas = document.getElementById('canvas'),
 
 // Variáveis
 
+var nome1 = prompt("Qual é o seu nome (jogador 1)?");
+var nome2 = prompt("Qual é o seu nome (jogador 2)?");
+
 var boxArr = [],
     x = 0,
     y = (numRow-1)*boxSize,
@@ -25,10 +28,11 @@ var boxArr = [],
     ladder2 = new Image(),
     ladder3 = new Image(),
     ladder4 = new Image(),
-    jogador1 = new Jogador(corJogador1, 'Luiz'), // Instância do jogador 1
-    jogador2 = new Jogador(corJogador2, 'José'), // Instância do jogador 2
+    jogador1 = new Jogador(corJogador1, nome1), // Instância do jogador 1
+    jogador2 = new Jogador(corJogador2, nome2), // Instância do jogador 2
     jogador1Turno = Math.random()<0.5?false:true,
-    jogarNovamente = false;
+    jogarNovamente = false,
+    statusGame = true;
 
 snake1.src = './img/snake1.png';
 snake2.src = './img/snake2.png';
@@ -104,23 +108,19 @@ function Jogar() {
         jogador1.avatar();
         jogador2.avatar();
         jogador1Turno = jogarNovamente;
-        if (jogador1Turno) {
-            Borda();
-            LoadCobraseEscadas();
-            jogador1.jogarDado();
-            jogador1.avatar();
-            jogador2.avatar();
-        }
         jogarNovamente = false;
     } else {
         Borda();
         LoadCobraseEscadas();
-        if (jogador1.posicao == 100) {
-            alert("O jogo acabou "+jogador2.nome);
+        if (statusGame == false) {
+            alert("O jogo acabou "+jogador2.nome+"!");
         } else {
             jogador2.jogarDado();
             jogador2.avatar();
             jogador1.avatar();
+            if (jogarNovamente) {
+                jogador2.jogarDado();
+            }
             jogador1Turno = true;
         }
     }
@@ -144,8 +144,8 @@ function Jogador(color, nome) {
         _canvasPlayerObj.FillText("Dado1 "+dado1+" + Dado2 "+dado2+" = "+soma, 20, 200, '#1f1f2e', '20px Arial');
 
         if (dado1 == dado2) {
-            jogarNovamente = true;
             alert("Jogador "+this.nome+" vai jogar novamente. \nDado 1 = "+dado1+"\nDado 2 = "+dado2);
+            jogarNovamente = true;
         }
 
         if (soma >= 2) {
@@ -162,6 +162,7 @@ function Jogador(color, nome) {
         // Verificando se ele é o vencedor
         if (this.posicao == boxArr.length-1){
             alert("O jogador "+this.nome+" venceu!! \n Por favor, precione ENTER.");
+            statusGame = false;
         }
     }
 
