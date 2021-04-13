@@ -52,5 +52,7 @@ Antes do game iniciar ele pergunta o nome dos jogadores:
 
 ![](/img_game/alertEscada.png)
 
+#### Consequentemente o jogador irá avançar as casas do corpo da escada.
+
 
 #### PS: Utilizei tudo que eu conhecia sobre os efeitos e animações para deixar o jogo mais interativo possível, essa é uma stack que tenho que melhorar. Por último, eu usei um módulo que achei na internet para consegui facilitar a criação do tabuleiro e dos objetos. Sinto que não segui alguns requisitos funcionais.
