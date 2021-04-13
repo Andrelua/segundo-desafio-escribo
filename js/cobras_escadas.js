@@ -16,6 +16,13 @@ const canvas = document.getElementById('canvas'),
 var nome1 = prompt("Qual é o seu nome (jogador 1)?");
 var nome2 = prompt("Qual é o seu nome (jogador 2)?");
 
+if (nome1 == null) {
+    nome1 = '1';
+}
+if (nome2 == null) {
+    nome2 = '2';
+}
+
 var boxArr = [],
     x = 0,
     y = (numRow-1)*boxSize,
